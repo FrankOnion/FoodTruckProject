@@ -38,12 +38,71 @@ public class FoodTruckApp {
             numTrucks++;
         }
 
-        // Display the list of entered food trucks
-        System.out.println("\nList of Entered Food Trucks:");
+        // Display the main menu
+        int choice;
+        do {
+            choice = displayMainMenu(input);
+            switch (choice) {
+                case 1:
+                    listAllFoodTrucks();
+                    break;
+                case 2:
+                    displayAverageRating();
+                    break;
+                case 3:
+                    displayHighestRatedTruck();
+                    break;
+                case 4:
+                    System.out.println("Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
+            }
+        } while (choice != 4);
+
+        input.close();
+    }
+
+    private int displayMainMenu(Scanner input) {
+        System.out.println("\nMain Menu:");
+        System.out.println("1. List all existing food trucks");
+        System.out.println("2. See the average rating of food trucks");
+        System.out.println("3. Display the highest-rated food truck");
+        System.out.println("4. Quit");
+        System.out.print("Please select an option: ");
+        return input.nextInt();
+    }
+
+    private void listAllFoodTrucks() {
+        System.out.println("\nList of Food Trucks:");
         for (int i = 0; i < numTrucks; i++) {
             System.out.println(fleet[i]);
         }
+    }
 
-        input.close();
+    private void displayAverageRating() {
+        double sum = 0.0;
+        for (int i = 0; i < numTrucks; i++) {
+            sum += fleet[i].getRating();
+        }
+        double average = numTrucks > 0 ? sum / numTrucks : 0.0;
+        System.out.println("\nAverage Rating of Food Trucks: " + average);
+    }
+
+    private void displayHighestRatedTruck() {
+        if (numTrucks == 0) {
+            System.out.println("\nNo food trucks to display.");
+            return;
+        }
+
+        FoodTruck highestRatedTruck = fleet[0];
+        for (int i = 1; i < numTrucks; i++) {
+            if (fleet[i].getRating() > highestRatedTruck.getRating()) {
+                highestRatedTruck = fleet[i];
+            }
+        }
+
+        System.out.println("\nHighest-Rated Food Truck:");
+        System.out.println(highestRatedTruck);
     }
 }
